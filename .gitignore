@@ -33,3 +33,7 @@ build/
 /.idea/sonarlint/issuestore/9/d/*
 /.idea/sonarlint/issuestore/b/c/*
 /.idea/*.xml
+/.idea
+/.idea
+/target
+/*.iml
