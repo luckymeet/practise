@@ -2,9 +2,7 @@ package com.mybatis.spring;
 
 import com.mybatis.session.MySqlSession;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.stereotype.Component;
 
-@Component
 public class MyMapperFactoryBean implements FactoryBean {
 
     private Class<?> mapperInterface;

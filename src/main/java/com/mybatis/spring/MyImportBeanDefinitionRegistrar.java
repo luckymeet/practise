@@ -29,6 +29,8 @@ public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
             String className = clazz.getName();
             String beanName = className.substring(className.lastIndexOf('.') + 1);
             beanName = beanName.substring(0, 1).toLowerCase() + beanName.substring(1);
+            // 将beanName和bean对应的FactoryBean对象放入spring容器，之后getBean(beanName)
+            // 的时候实际是从bean对应的FactoryBean对象的getObject()方法获取bean
             registry.registerBeanDefinition(beanName, beanDefinition);
         }
     }
