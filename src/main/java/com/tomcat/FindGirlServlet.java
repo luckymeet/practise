@@ -20,7 +20,7 @@ public class FindGirlServlet extends MyHttpServlet {
     @Override
     protected void doGet(MyRequest request, MyResponse response) {
         try {
-            response.write("get girl...");
+            response.write(request.getParamMap().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class FindGirlServlet extends MyHttpServlet {
     @Override
     protected void doPost(MyRequest request, MyResponse response) {
         try {
-            response.write("post girl...");
+            response.write(request.getParamMap().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

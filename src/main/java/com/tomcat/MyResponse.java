@@ -30,16 +30,17 @@ public class MyResponse {
 
     public void write(String content) throws IOException {
         StringBuilder httpContent = new StringBuilder();
-        httpContent.append("HTTP/1.1 200 OK\n").append("Content-Type:text/html\n").append("\r\n")
-                .append("<html><body>").append(content).append("<html><body>");
+        httpContent.append("HTTP/1.1 200 OK\n").append("Content-Type:text/html\n").append("\r\n").append(content);
         ByteBuffer byteBuffer = ByteBuffer.wrap(httpContent.toString().getBytes(UTF_8));
         SocketChannel channel = (SocketChannel) selectionKey.channel();
         try {
             channel.write(byteBuffer);
-            selectionKey.channel();
+            selectionKey.cancel();
         } finally {
             byteBuffer.flip();
-            channel.close();
+            if (channel != null) {
+                channel.close();
+            }
         }
     }
 }

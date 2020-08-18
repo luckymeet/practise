@@ -29,14 +29,19 @@ public class MyRequest {
         // 获取通道
         SocketChannel channel = (SocketChannel) selectionKey.channel();
         ByteBuffer byteBuffer = ByteBuffer.allocate(16 * 1024);
-        String httpRequest = "";
+        System.out.println(channel);
         try {
             if (channel.read(byteBuffer) > 0) {
-                httpRequest = new String(byteBuffer.array()).trim();
+                String httpRequest = new String(byteBuffer.array()).trim();
+                System.out.println("服务端接收请求：" + httpRequest);
+                // 获取请求头
                 String httpHead = httpRequest.split("\n")[0];
+                // 获取请求方法类型
                 method = httpHead.split("\\s")[0];
                 String path = httpHead.split("\\s")[1];
+                // 获取请求url
                 url = path.split("\\?")[0];
+                // 获取请求参数
                 String[] params = path.indexOf("?") > 0 ? path.split("\\&") : null;
                 if (params != null) {
                     for (String s : params) {
