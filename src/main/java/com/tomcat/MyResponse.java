@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -36,6 +34,8 @@ public class MyResponse {
         try {
             channel.write(byteBuffer);
             selectionKey.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             byteBuffer.flip();
             if (channel != null) {

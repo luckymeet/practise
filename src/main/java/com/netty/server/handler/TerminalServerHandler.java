@@ -1,7 +1,7 @@
 package com.netty.server.handler;
 
-import com.netty.protocol.IMMessage;
 import com.netty.processor.MsgProcessor;
+import com.netty.protocol.IMMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;

@@ -2,8 +2,10 @@ package com.tomcat;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.channels.*;
-import java.nio.channels.spi.SelectorProvider;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,28 +33,28 @@ public class MyTomcat {
 
     public MyTomcat() {
         this.port = 8080;
-        int cpuNum = Runtime.getRuntime().availableProcessors();
+        int cpuNum = Math.max(1, Runtime.getRuntime().availableProcessors());
         this.executorService = new ThreadPoolExecutor(cpuNum + 1, 2 * cpuNum, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(2000));
     }
 
     public MyTomcat(int port) {
         this.port = port;
-        int cpuNum = Runtime.getRuntime().availableProcessors();
+        int cpuNum = Math.max(1, Runtime.getRuntime().availableProcessors());
         this.executorService = new ThreadPoolExecutor(cpuNum + 1, 2 * cpuNum, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(2000));
     }
 
     public void start() throws IOException {
         initServletMapping();
-        // 启动Selector
-        selector = Selector.open();
         // 打开通道
         ServerSocketChannel channel = ServerSocketChannel.open();
         try {
-            // 配置通道为非阻塞
-            channel.configureBlocking(false);
             InetSocketAddress address = new InetSocketAddress(port);
             // 监听端口
             channel.bind(address);
+            // 启动Selector
+            selector = Selector.open();
+            // 配置通道为非阻塞
+            channel.configureBlocking(false);
             // 将通道注册给Selector
             channel.register(selector, SelectionKey.OP_ACCEPT);
             System.out.println("MyTomcat is start...\tport:" + port);
@@ -83,7 +85,11 @@ public class MyTomcat {
                     SelectionKey selectionKey = iterator.next();
                     // 接受新连接事件
                     if (selectionKey.isAcceptable()) {
-                        doRead(selectionKey);
+                        ServerSocketChannel channel = (ServerSocketChannel) selectionKey.channel();
+                        SocketChannel socketChannel = null;
+                        socketChannel = channel.accept();
+                        socketChannel.configureBlocking(false);
+                        socketChannel.register(selector, SelectionKey.OP_READ);
                     }
                     // 可读事件
                     else if (selectionKey.isValid() && selectionKey.isReadable()) {
@@ -93,7 +99,7 @@ public class MyTomcat {
                     // 可写事件
                     else if (selectionKey.isValid() && selectionKey.isWritable()) {
                         responseList.add(new MyResponse(selectionKey));
-                        selectionKey.interestOps(SelectionKey.OP_READ);
+                        selectionKey.interestOps(SelectionKey.OP_WRITE);
                     }
                     // 等待请求和响应对象都封装好了进行业务处理
                     if (!requestList.isEmpty() && !responseList.isEmpty()) {
@@ -105,18 +111,6 @@ public class MyTomcat {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    private void doRead(SelectionKey next) {
-        ServerSocketChannel channel = (ServerSocketChannel) next.channel();
-        SocketChannel socketChannel = null;
-        try {
-            socketChannel = channel.accept();
-            socketChannel.configureBlocking(false);
-            socketChannel.register(selector, SelectionKey.OP_READ);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
