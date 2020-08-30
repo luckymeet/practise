@@ -33,5 +33,6 @@ public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
             // 的时候实际是从bean对应的FactoryBean对象的getObject()方法获取bean
             registry.registerBeanDefinition(beanName, beanDefinition);
         }
+        System.out.println("MyImportBeanDefinitionRegistrar is invoke");
     }
 }
