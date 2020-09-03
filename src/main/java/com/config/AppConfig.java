@@ -13,8 +13,8 @@ public class AppConfig {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource("jdbc:mysql://localhost:3306/test?serverTimezone=UTC", "root", "root.ycw");
-        driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource("jdbc:mysql://39.105.58.23:3306/test?serverTimezone=UTC", "root", "root.ycw");
+        driverManagerDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         return driverManagerDataSource;
     }
 

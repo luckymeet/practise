@@ -1,17 +1,10 @@
 package com.spring.postprocessors;
 
-import com.mybatis.mapper.ArticleMapper;
-import com.mybatis.mapper.UserMapper;
-import com.mybatis.spring.MyMapperFactoryBean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 
 @Component
 public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {
@@ -36,7 +29,8 @@ public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegi
 //            // 的时候实际是从bean对应的FactoryBean对象的getObject()方法获取bean
 //            registry.registerBeanDefinition(beanName, beanDefinition);
 //        }
-        System.out.println("MyBeanDefinitionRegistryPostProcessor-postProcessBeanDefinitionRegistry is invoke");
+
+        System.out.println(registry.getBeanDefinitionNames() + "MyBeanDefinitionRegistryPostProcessor-postProcessBeanDefinitionRegistry is invoke");
     }
 
     @Override
