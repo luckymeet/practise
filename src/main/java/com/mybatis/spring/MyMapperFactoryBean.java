@@ -13,6 +13,7 @@ public class MyMapperFactoryBean implements FactoryBean {
 
     @Override
     public Object getObject() throws Exception {
+        System.out.println("FactoryBean-getObject is invoke");
         MySqlSession<Object> mySqlSession = new MySqlSession<>();
         return mySqlSession.getMapper(mapperInterface);
     }
