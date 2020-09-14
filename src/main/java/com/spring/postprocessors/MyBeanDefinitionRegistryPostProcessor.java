@@ -30,7 +30,7 @@ public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegi
 //            registry.registerBeanDefinition(beanName, beanDefinition);
 //        }
 
-        System.out.println(registry.getBeanDefinitionNames() + "MyBeanDefinitionRegistryPostProcessor-postProcessBeanDefinitionRegistry is invoke");
+        System.out.println("MyBeanDefinitionRegistryPostProcessor-postProcessBeanDefinitionRegistry is invoke");
     }
 
     @Override

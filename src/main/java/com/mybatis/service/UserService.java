@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements I {
 
     @Autowired
     private UserMapper userMapper;
@@ -15,7 +15,8 @@ public class UserService {
         userMapper.getList();
     }
 
-    public void saveUser() {
+    @Override
+    public void saveUse() {
         TransactionUtil.execute("INSERT INTO user(`name`, `age`) VALUES (?, ?)", "ac", "20");
 //        TransactionUtil.execute("UPDATE user t SET t.age = t.age - 1 WHERE t.id = ?", "4");
     }
